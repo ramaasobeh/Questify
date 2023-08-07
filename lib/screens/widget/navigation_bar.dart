@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../login/login_screen.dart';
+
 class Navigation extends StatelessWidget {
   const Navigation({Key? key}) : super(key: key);
 
@@ -40,7 +42,9 @@ class Navigation extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text("Log Out"),
-            onTap: ()=> null,
+            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+                    (Route<dynamic>route) => false),
           )
 
         ],

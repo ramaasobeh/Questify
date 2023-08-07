@@ -36,8 +36,8 @@ class _HomeViewState extends State<HomeView> {
           shadowColor: Colors.black,
           color: Colors.white,
           child: SizedBox(
-            width: 1500,
-            height: 1500,
+            width: 1000,
+            height: 1000,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
