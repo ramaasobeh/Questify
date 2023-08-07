@@ -30,54 +30,117 @@ class _ChooseUser extends State<ChooseUser> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.white,
       body: CenteredView(
-        child: Column(children: <Widget>[
-          Expanded(child: Row(children: <Widget>[
-            DetailsView(),
-            Expanded(child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    //Image.asset('assets/questify(1).png',width: 300,height: 250,),
-                    const  Text(
-                      'Choose your Account type',
-                      style: TextStyle(
-                        color: Colors.deepPurple,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 40,
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
+          elevation: 200,
+          shadowColor: Colors.black,
+          color: Colors.white,
+          child: SizedBox(
+            width: 1000,
+            height: 1000,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(children: <Widget>[
+                Expanded(child: Row(children: <Widget>[
+                  DetailsView(),
+                  Expanded(child: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+
+                        children: <Widget>[
+                          //Image.asset('assets/questify(1).png',width: 300,height: 250,),
+                          const  Text(
+
+                            'Choose your Account type',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40,
+
+
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => SignUpStudet()),
+                                        (Route<dynamic>route) => false);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.black45,
+                                fixedSize: const Size(150, 55),
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Text(
+                                'Student',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+
+                          ),
+                          const SizedBox(height: 15),
+                          const  Text(
+
+                            'OR',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.deepPurple,
+
+
+
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => SignUpForProfesor()),
+                                        (Route<dynamic>route) => false);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.black45,
+                                fixedSize: const Size(150, 55),
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Text(
+                                'Profesor',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 15),
-               Padding(
-                  padding: EdgeInsets.only(left:30, right:30),
-                  child:DropdownButton(
-                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                       icon: const Icon(Icons.school_sharp,color: Colors.deepPurple,),
-                       dropdownColor: Colors.deepPurple,
-                       hint: Text('Choose'),
-
-                       items: listItem.map(
-                               (e)=>  DropdownMenuItem(child: Text(e),value: e,)
-                     ).toList(),
-                         onChanged: (val){
-                           setState(() {
-                             dropDownValue = val as String;
-                             Change(dropDownValue!);
-                           });
-                     },
-                     ),)
-                  ],
-                ),
-              ),
-
-
-            ),),
-          ],))
-        ],),
+                  ),),
+                ],))
+              ],), //Column
+            ), //Padding
+          ), //SizedBox
+        ), //Card
       ),
-
     );
   }
 }

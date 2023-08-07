@@ -60,6 +60,8 @@ flutter:
     - assets/questify(1).png
     - assets/background/background2.jpg
     - assets/profile.jpg
+    - assets/avatar.png
+    - assets/images.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
