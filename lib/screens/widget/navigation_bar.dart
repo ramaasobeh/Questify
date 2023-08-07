@@ -13,20 +13,35 @@ class Navigation extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("Edit Information"),
-            accountEmail: Text("exam"),
+            decoration: BoxDecoration(color: Colors.deepPurple),
+            accountName: Text("Rama Sobeh"),
+            accountEmail: Text("blala@gmail.com"),
             currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.deepPurple,
               child: ClipOval(
+
                 child: Image.asset('assets/avatar.png',
                   fit: BoxFit.cover,width: 50,height: 50,),
 
               ),
             ),
-            decoration: BoxDecoration(
-              color: Colors.deepPurple,
 
-            ),
           ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text("Edit Information"),
+            onTap: ()=> null,
+          ),
+          ListTile(
+            leading: Icon(Icons.branding_watermark_sharp),
+            title: Text("your Exam"),
+            onTap: ()=> null,
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text("Log Out"),
+            onTap: ()=> null,
+          )
 
         ],
       ),
