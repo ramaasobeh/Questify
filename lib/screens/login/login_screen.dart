@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project1/pallete.dart';
 
 import '../../details/details_view.dart';
+import '../home/home_view_profesor.dart';
 import '../widget/GradientButton2.dart';
 import '../widget/centered_view/centered_view.dart';
 import '../widget/gradientButton.dart';
+import 'chooses.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -115,7 +117,26 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const GradientButton(),
+                           ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (BuildContext context) => HomeView()),
+                                      (Route<dynamic>route) => false);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.purple.shade900,
+                              fixedSize: const Size(395, 55),
+                              shadowColor: Colors.black,
+                            ),
+                            child: const Text(
+                              'Sign in',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 20),
 
                           const Text(
@@ -126,7 +147,25 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const SizedBox(height: 20),
 
-                          const GradientButton2()
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (BuildContext context) => ChooseUser()),
+                                      (Route<dynamic>route) => false);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.purple.shade900,
+                              fixedSize: const Size(395, 55),
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: const Text(
+                              'Sign UP',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

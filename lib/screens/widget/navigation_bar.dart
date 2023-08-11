@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/screens/home/home_view_profesor.dart';
 
+import '../../details/editInformationPro.dart';
 import '../login/login_screen.dart';
 
 class Navigation extends StatelessWidget {
@@ -19,7 +21,7 @@ class Navigation extends StatelessWidget {
             accountName: Text("Rama Sobeh"),
             accountEmail: Text("blala@gmail.com"),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.deepPurple,
+              backgroundColor: Colors.purple.shade800 ,
               child: ClipOval(
 
                 child: Image.asset('assets/avatar.png',
@@ -30,15 +32,21 @@ class Navigation extends StatelessWidget {
 
           ),
           ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Home"),
+            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => HomeView()),
+                    (Route<dynamic>route) => false),
+          ),
+
+          ListTile(
             leading: Icon(Icons.account_circle),
             title: Text("Edit Information"),
-            onTap: ()=> null,
+            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => EditInformation()),
+                    (Route<dynamic>route) => false),
           ),
-          ListTile(
-            leading: Icon(Icons.branding_watermark_sharp),
-            title: Text("your Exam"),
-            onTap: ()=> null,
-          ),
+
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text("Log Out"),

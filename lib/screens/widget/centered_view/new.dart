@@ -11,7 +11,7 @@ class newCenter extends StatelessWidget {
       decoration: BoxDecoration(
 
         image: DecorationImage(
-          image: AssetImage("assets/background/background2.jpg"),fit: BoxFit.cover,
+          image: AssetImage("assets/background/background2.jpg"),fit: BoxFit.cover,opacity: 25
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 60),

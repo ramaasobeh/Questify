@@ -20,7 +20,7 @@ class HomeViewStudent extends StatelessWidget {
 
         ],
         title: Text("Questify"), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white10,fontSize: 30),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.purple.shade900,
         toolbarHeight: 60, // default is 56
         toolbarOpacity: 0.5,// simple as that!
       ),

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project1/screens/home/Provider/favourite_provider.dart';
 import 'package:project1/screens/home/home_view_profesor.dart';
+import 'package:project1/screens/home/profesor/autamitic.dart';
+import 'package:project1/screens/home/profesor/bank.dart';
+import 'package:project1/screens/home/selected_questions/select_questions.dart';
+import 'package:project1/screens/home/selected_questions/selected_questions.dart';
 import 'package:project1/screens/login/login_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,14 +18,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async => false,
-        child: MaterialApp(
+    return MultiProvider(providers:[
+        ChangeNotifierProvider(create: (_) => FavItem()),
+    ],
+      child: Builder(
+        builder: (BuildContext context) {
+
+
+        return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home:LoginPage(),
-    ));
+    );}));
   }
 }
+
+

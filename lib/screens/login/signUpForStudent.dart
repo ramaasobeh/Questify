@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../details/details_view.dart';
 import '../../pallete.dart';
+import '../home/home_view_profesor.dart';
 import '../widget/GradientButton2.dart';
 import '../widget/centered_view/centered_view.dart';
 import '../widget/gradientButton.dart';
@@ -232,8 +233,8 @@ class _SignUpStudetState extends State<SignUpStudet> {
                           DropdownButton(
 
                             icon: const Icon(Icons.menu,color: Colors.deepPurple,),
-                            dropdownColor: Colors.deepPurple,
-                            hint: Text('Choose'),
+                            dropdownColor: Colors.grey,
+                            hint: Text(''),
                             value: dropDownValue,
                             items: <int>[1, 2, 3, 4, 5].map((int value) {
                               return new DropdownMenuItem<int>(
@@ -251,9 +252,26 @@ class _SignUpStudetState extends State<SignUpStudet> {
                           const SizedBox(height: 15),
 
 
-                          const GradientButtonForSignup(),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (BuildContext context) => HomeView()),
+                                    (Route<dynamic>route) => false);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.purple.shade900,
+                            fixedSize: const Size(395, 55),
+                            shadowColor: Colors.transparent,
+                          ),
+                          child: const Text(
+                            'Sign UP',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
                           const SizedBox(height: 15),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

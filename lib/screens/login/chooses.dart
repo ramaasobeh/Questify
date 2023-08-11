@@ -78,7 +78,7 @@ class _ChooseUser extends State<ChooseUser> {
                                         (Route<dynamic>route) => false);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.black45,
+                                primary: Colors.deepPurple,
                                 fixedSize: const Size(150, 55),
                                 shadowColor: Colors.transparent,
                               ),
@@ -117,7 +117,7 @@ class _ChooseUser extends State<ChooseUser> {
                                         (Route<dynamic>route) => false);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.black45,
+                                primary: Colors.deepPurple,
                                 fixedSize: const Size(150, 55),
                                 shadowColor: Colors.transparent,
                               ),
