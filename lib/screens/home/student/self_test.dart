@@ -1,19 +1,22 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/screens/home/profesor/createBank.dart';
-import 'package:project1/screens/home/student/Summary.dart';
-import 'package:project1/screens/home/student/self_test.dart';
-import 'package:project1/screens/widget/centered_view/new.dart';
+import 'package:project1/screens/widget/navigation2.dart';
 
-import '../widget/centered_view/centered_view.dart';
-import '../widget/navigation2.dart';
-import '../widget/navigation_bar.dart';
+import '../../widget/centered_view/new.dart';
+import '../../widget/navigation_bar.dart';
+import 'Summary.dart';
 
-class HomeViewStudent extends StatelessWidget {
-  const HomeViewStudent({Key? key}) : super(key: key);
+class SelfTest extends StatefulWidget {
+  const SelfTest({Key? key}) : super(key: key);
 
   @override
+  State<SelfTest> createState() => _SelfTestState();
+}
+
+class _SelfTestState extends State<SelfTest> {
+  @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation2(),
       appBar: AppBar(
@@ -53,7 +56,6 @@ class HomeViewStudent extends StatelessWidget {
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(builder: (BuildContext context) => Summary()),
                                         (Route<dynamic>route) => false);
-
                               },
 
                               style: ElevatedButton.styleFrom(
@@ -70,15 +72,13 @@ class HomeViewStudent extends StatelessWidget {
 
                             ElevatedButton(
                               onPressed: (){
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (BuildContext context) => SelfTest()),
-                                        (Route<dynamic>route) => false);
+
                               },
 
                               style: ElevatedButton.styleFrom(
                                 textStyle: TextStyle(fontSize: 20),
 
-                                primary: Colors.purple.shade900,
+                                primary: Colors.black87,
                                 fixedSize: const Size(300, 55),
                                 shadowColor: Colors.transparent,
                               ),
@@ -106,19 +106,38 @@ class HomeViewStudent extends StatelessWidget {
                       ),
 
                       Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text("Welcome to our website\nlet's study with each other",
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.w700
-                                ),),
-                            ],
+                        child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Upload your file to test yourself",
+                              style: TextStyle(
+                                  fontSize: 23,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
+                            SizedBox(height: 15,),
+                            ElevatedButton(onPressed: () async {
+                              var result = await FilePicker.platform.pickFiles(
+                                allowMultiple: true,
+                              );
+                              if(result == null) return;
+                              var file = result.files.first;
 
-                          ),
+
+                            },
+                                style: ElevatedButton.styleFrom(
+                                  textStyle: TextStyle(fontSize: 20),
+                                  primary: Colors.purple.shade900,
+                                  fixedSize: const Size(300, 55),
+                                  shadowColor: Colors.transparent,
+                                ),
+                                child: Text("Upload your file")
+                            )
+                          ],
+
+                        ),
 
                       ),
                     ],))

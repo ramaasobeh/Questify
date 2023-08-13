@@ -3,9 +3,7 @@ import 'package:project1/pallete.dart';
 
 import '../../details/details_view.dart';
 import '../home/home_view_profesor.dart';
-import '../widget/GradientButton2.dart';
 import '../widget/centered_view/centered_view.dart';
-import '../widget/gradientButton.dart';
 import 'chooses.dart';
 
 

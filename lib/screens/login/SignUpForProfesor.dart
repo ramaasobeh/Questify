@@ -3,10 +3,8 @@ import 'package:project1/screens/home/home_view_profesor.dart';
 
 import '../../details/details_view.dart';
 import '../../pallete.dart';
-import '../widget/GradientButton2.dart';
 import '../widget/centered_view/centered_view.dart';
-import '../widget/gradientButton.dart';
-import '../widget/gradientButton_forSignup.dart';
+
 import 'login_screen.dart';
 
 class SignUpForProfesor extends StatelessWidget {

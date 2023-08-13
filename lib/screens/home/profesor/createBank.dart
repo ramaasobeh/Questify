@@ -22,10 +22,7 @@ class _createBankState extends State<createBank> {
       drawer: Navigation(),
       appBar: AppBar(
         elevation: 20,
-        actions: [
-          Image.asset('assets/questify(1).png'),
 
-        ],
         title: Text("Questify"), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white10,fontSize: 30),
         backgroundColor: Colors.purple.shade900,
         toolbarHeight: 60, // default is 56

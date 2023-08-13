@@ -31,17 +31,14 @@ class _HomeViewState extends State<HomeView> {
     return  Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation(),
-      appBar: AppBar(
-    elevation: 20,
-    actions: [
-      Image.asset('assets/questify(1).png'),
+      appBar:AppBar(
+        elevation: 20,
 
-    ],
-    title: Text("Questify"), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white10,fontSize: 30),
-    backgroundColor: Colors.purple.shade900,
+        title: Text("Questify"), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white10,fontSize: 30),
+        backgroundColor: Colors.purple.shade900,
         toolbarHeight: 60, // default is 56
         toolbarOpacity: 0.5,// simple as that!
-    ),
+      ),
       body: newCenter(
 
         child: Card(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project1/screens/home/Provider/favourite_provider.dart';
 import 'package:project1/screens/home/home_view_profesor.dart';
+import 'package:project1/screens/home/home_view_student.dart';
 import 'package:project1/screens/home/profesor/autamitic.dart';
 import 'package:project1/screens/home/profesor/bank.dart';
 import 'package:project1/screens/home/selected_questions/select_questions.dart';
 import 'package:project1/screens/home/selected_questions/selected_questions.dart';
 import 'package:project1/screens/login/login_screen.dart';
+import 'package:project1/screens/login/splashPage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,11 +28,12 @@ class MyApp extends StatelessWidget {
 
 
         return MaterialApp(
-      title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+      title: 'QUESTIFY',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:LoginPage(),
+      home:SplashPage(),
     );}));
   }
 }

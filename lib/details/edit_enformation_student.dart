@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../details/details_view.dart';
-import '../../pallete.dart';
-import '../home/home_view_profesor.dart';
-import '../home/home_view_student.dart';
-import '../widget/centered_view/centered_view.dart';
-import 'login_screen.dart';
+import '../pallete.dart';
+import '../screens/home/home_view_student.dart';
+import '../screens/widget/centered_view/new.dart';
+import '../screens/widget/navigation2.dart';
 
-class SignUpStudet extends StatefulWidget {
+class EditStudent extends StatefulWidget {
+  const EditStudent({Key? key}) : super(key: key);
+
   @override
-  State<SignUpStudet> createState() => _SignUpStudetState();
+  State<EditStudent> createState() => _EditStudentState();
 }
-class _SignUpStudetState extends State<SignUpStudet> {
+
+class _EditStudentState extends State<EditStudent> {
   bool hidePassword = true;
   int? dropDownValue ;
 
+  @override
   void _togglePasswordView(){
 
     setState(() {
@@ -24,11 +26,19 @@ class _SignUpStudetState extends State<SignUpStudet> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
+      drawer: Navigation2(),
+      appBar: AppBar(
+        elevation: 20,
+
+        title: Text("Questify"), centerTitle: true, titleTextStyle: TextStyle(color: Colors.white10,fontSize: 30),
+        backgroundColor: Colors.purple.shade900,
+        toolbarHeight: 60, // default is 56
+        toolbarOpacity: 0.5,// simple as that!
+      ),
       backgroundColor: Colors.white,
-      body: CenteredView(
+      body: newCenter(
         child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
           elevation: 200,
@@ -41,14 +51,13 @@ class _SignUpStudetState extends State<SignUpStudet> {
               padding: const EdgeInsets.all(20.0),
               child: Column(children: <Widget>[
                 Expanded(child: Row(children: <Widget>[
-                  DetailsView(),
                   Expanded(child: SingleChildScrollView(
                     child: Center(
                       child: Column(
                         children: <Widget>[
-                          //Image.asset('assets/questify(1).png',width: 300,height: 250,),
+                          // Image.asset('assets/questify(1).png',width: 300,height: 250,),
                           const Text(
-                            'SignUp As Student',
+                            'Edit your infomation',
                             style: TextStyle(
                               color: Colors.deepPurple,
                               fontWeight: FontWeight.bold,
@@ -56,6 +65,7 @@ class _SignUpStudetState extends State<SignUpStudet> {
                             ),
                           ),
                           //first name
+                          const SizedBox(height: 15),
                           const SizedBox(height: 15),
                           const Text(
                             "Enter your first name",
@@ -246,50 +256,53 @@ class _SignUpStudetState extends State<SignUpStudet> {
                               });
                             },
                           ),
-                          //password
-                          const SizedBox(height: 15),
-
-
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (BuildContext context) => HomeViewStudent()),
-                                    (Route<dynamic>route) => false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.purple.shade900,
-                            fixedSize: const Size(395, 55),
-                            shadowColor: Colors.transparent,
-                          ),
-                          child: const Text(
-                            'Sign UP',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
                           const SizedBox(height: 15),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Already have an account",
-                                  style: TextStyle(color: Colors.black)),
-                              TextButton(
+                            children: <Widget>[
+                              ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LoginPage(),
-                                      ));
-                                },
-                                child: const Text('Login',
-                                    style:
-                                    TextStyle(fontSize: 18, color:Colors.black)),
-                              ),
-                            ],
 
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.purple.shade900,
+                                  fixedSize: const Size(100, 55),
+                                  shadowColor: Colors.transparent,
+                                ),
+                                child: const Text(
+                                  'Save',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 15,),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (BuildContext context) => HomeViewStudent()),
+                                          (Route<dynamic>route) => false);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.purple.shade900,
+                                  fixedSize: const Size(100, 55),
+                                  shadowColor: Colors.transparent,
+                                ),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+
+                            ],
                           )
+
+
                         ],
                       ),
                     ),
