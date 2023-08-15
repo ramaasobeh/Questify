@@ -1,6 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/screens/home/student/Summary_Screen.dart';
 import 'package:project1/screens/home/student/self_test.dart';
+import 'package:project1/screens/home/student/study.dart';
 
 import '../../widget/centered_view/new.dart';
 import '../../widget/navigation2.dart';
@@ -89,7 +91,9 @@ class _SummaryState extends State<Summary> {
 
                             ElevatedButton(
                               onPressed: (){
-
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => StudyScreen()),
+                                        (Route<dynamic>route) => false);
                               },
 
                               style: ElevatedButton.styleFrom(
@@ -124,6 +128,9 @@ class _SummaryState extends State<Summary> {
                                  );
                                  if(result == null) return;
                                  var file = result.files.first;
+                                 Navigator.of(context).pushAndRemoveUntil(
+                                     MaterialPageRoute(builder: (BuildContext context) => SummaryScreen()),
+                                         (Route<dynamic>route) => false);
 
 
                                },

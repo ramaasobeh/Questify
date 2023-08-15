@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project1/screens/home/Provider/favourite_provider.dart';
+import 'package:project1/screens/home/Provider/select_provider.dart';
 import '../../widget/centered_view/new.dart';
 import '../../widget/navigation_bar.dart';
 
@@ -19,7 +20,7 @@ class _SelectQuestionState extends State<SelectQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteProvider = Provider.of<FavItem>(context);
+    final favoriteProvider = Provider.of<SelectIem>(context);
 
     return Scaffold(
       drawer: Navigation(),
@@ -67,7 +68,7 @@ class _SelectQuestionState extends State<SelectQuestion> {
                                             child: ListView.builder(
                                               itemCount: 50,
                                               itemBuilder : (context, index){
-                                                return Consumer<FavItem>(builder: (context, value, child){
+                                                return Consumer<SelectIem>(builder: (context, value, child){
                                                   return ListTile(
                                                     onTap: (){
                                                       if(value.select.contains(index)){

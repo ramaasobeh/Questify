@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project1/screens/home/profesor/createBank.dart';
 import 'package:project1/screens/home/student/Summary.dart';
 import 'package:project1/screens/home/student/self_test.dart';
+import 'package:project1/screens/home/student/study.dart';
 import 'package:project1/screens/widget/centered_view/new.dart';
 
 import '../widget/centered_view/centered_view.dart';
@@ -89,7 +90,9 @@ class HomeViewStudent extends StatelessWidget {
 
                             ElevatedButton(
                               onPressed: (){
-
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => StudyScreen()),
+                                        (Route<dynamic>route) => false);
                               },
 
                               style: ElevatedButton.styleFrom(

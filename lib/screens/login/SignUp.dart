@@ -1,28 +1,112 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:project1/screens/home/home_view_profesor.dart';
+import 'package:http/http.dart';
+import 'package:project1/screens/home/home_view_student.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../details/details_view.dart';
 import '../../pallete.dart';
-import '../home/home_view_profesor.dart';
-import '../home/home_view_student.dart';
 import '../widget/centered_view/centered_view.dart';
 import 'login_screen.dart';
+import 'dart:html';
 
-class SignUpStudet extends StatefulWidget {
+
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
+
   @override
-  State<SignUpStudet> createState() => _SignUpStudetState();
-}
-class _SignUpStudetState extends State<SignUpStudet> {
-  bool hidePassword = true;
-  int? dropDownValue ;
+  State<SignUp> createState() => _SignUpState();
 
+}
+
+
+class _SignUpState extends State<SignUp> {
+  TextEditingController firstNameControl = TextEditingController();
+  TextEditingController lastNameControl = TextEditingController();
+  TextEditingController userNameControl = TextEditingController();
+  TextEditingController emailControl = TextEditingController();
+  TextEditingController passwordControl = TextEditingController();
+  bool _isLoading = false;
+
+  bool hidePassword = true;
   void _togglePasswordView(){
 
     setState(() {
       hidePassword =! hidePassword;
     });
   }
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  void signup(String firstName, lastName, userName,email,password) async{
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    try{
+       Response response = await post(Uri.parse("http://192.168.92.183:8000/auth/users/"),
+
+      body:{
+        'first_name' : firstName,
+        'last_name' : lastName,
+        'email': email,
+        'username': userName,
+        'password': password
+          });
+      if(response.statusCode==201){
+        var data = jsonDecode(response.body.toString());
+        if(data!=null){
+          setState(() {
+            _isLoading = false;
+          });
+          Text(response.body);
+          pre.setString("role", data["role"]);
+          String? stringValue = pre.getString('role');
+
+          if(stringValue == 'professor'){
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => HomeView()),
+                    (Route<dynamic>route) => false);
+          }
+          if(stringValue == 'student'){
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => HomeViewStudent()),
+                    (Route<dynamic>route) => false);
+          }
+
+
+        }else{
+          setState(() {
+            _isLoading = false;
+
+          });
+          Text(response.body);
+        }
+
+      }
+       if(response.statusCode==400){
+         var data = jsonDecode(response.body);
+         showDialog<String>(
+           context: context,
+           builder: (BuildContext context) => AlertDialog(
+
+             content: const Text('One of your information is empty',style: TextStyle(fontWeight: FontWeight.bold) ),
+             actions: <Widget>[
+               TextButton(
+                 onPressed: () => Navigator.pop(context, 'Cancel'),
+                 child: const Text('Cancel'),
+               ),
+               TextButton(
+                 onPressed: () => Navigator.pop(context, 'OK'),
+                 child: const Text('OK'),
+               ),
+             ],
+           ),
+         );
+       }
+
+    }catch(e){
+      print(e.toString());
+
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +114,7 @@ class _SignUpStudetState extends State<SignUpStudet> {
       backgroundColor: Colors.white,
       body: CenteredView(
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
           elevation: 200,
           shadowColor: Colors.black,
           color: Colors.white,
@@ -46,9 +130,9 @@ class _SignUpStudetState extends State<SignUpStudet> {
                     child: Center(
                       child: Column(
                         children: <Widget>[
-                          //Image.asset('assets/questify(1).png',width: 300,height: 250,),
+                          // Image.asset('assets/questify(1).png',width: 300,height: 250,),
                           const Text(
-                            'SignUp As Student',
+                            'SignUp ',
                             style: TextStyle(
                               color: Colors.deepPurple,
                               fontWeight: FontWeight.bold,
@@ -69,6 +153,7 @@ class _SignUpStudetState extends State<SignUpStudet> {
                               maxWidth: 400,
                             ),
                             child: TextFormField(
+                              controller:firstNameControl ,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(27),
                                 enabledBorder: OutlineInputBorder(
@@ -100,6 +185,7 @@ class _SignUpStudetState extends State<SignUpStudet> {
                               maxWidth: 400,
                             ),
                             child: TextFormField(
+                              controller: lastNameControl,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(27),
                                 enabledBorder: OutlineInputBorder(
@@ -120,6 +206,38 @@ class _SignUpStudetState extends State<SignUpStudet> {
                           //Email
                           const SizedBox(height: 15),
                           const Text(
+                            "Enter your User name",
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 400,
+                            ),
+                            child: TextFormField(
+                              controller:userNameControl,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(27),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:  const BorderSide(color: Pallete.borderColor, width: 3,),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Pallete.gradient2,
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                hintText: 'User Name',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+
+                          const Text(
                             "Enter your Email",
                             style: TextStyle(
                               fontSize: 17,
@@ -131,6 +249,7 @@ class _SignUpStudetState extends State<SignUpStudet> {
                               maxWidth: 400,
                             ),
                             child: TextFormField(
+                              controller: emailControl,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(27),
                                 enabledBorder: OutlineInputBorder(
@@ -162,46 +281,14 @@ class _SignUpStudetState extends State<SignUpStudet> {
                               maxWidth: 400,
                             ),
                             child: TextFormField(
+                              controller: passwordControl,
                               obscureText: hidePassword,
-                              controller:passwordController ,
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.key),
-                                  contentPadding: const EdgeInsets.all(27),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:  const BorderSide(color: Pallete.borderColor, width: 3,),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Pallete.gradient2,
-                                      width: 3,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  hintText: 'password',
-                                  suffixIcon: InkWell(
-                                      onTap: _togglePasswordView,
-                                      child: Icon(Icons.visibility))
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          const Text(
-                            "Enter your University Specialization",
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              maxWidth: 400,
-                            ),
-
-                            child: TextFormField(
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(27),
+                                suffix: InkWell(
+                                  onTap: _togglePasswordView,
+                                  child: Icon(Icons.visibility)
+                                ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:  const BorderSide(color: Pallete.borderColor, width: 3,),
                                   borderRadius: BorderRadius.circular(10),
@@ -213,48 +300,20 @@ class _SignUpStudetState extends State<SignUpStudet> {
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                hintText: 'University Specialization',
+                                hintText: 'Password',
                               ),
                             ),
                           ),
-                          //password
                           const SizedBox(height: 15),
-                          const SizedBox(height: 15),
-                          const Text(
-                            "ِِِِِِِِِAcademic year",
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-
-                          DropdownButton(
-
-                            icon: const Icon(Icons.menu,color: Colors.deepPurple,),
-                            dropdownColor: Colors.grey,
-                            hint: Text(''),
-                            value: dropDownValue,
-                            items: <int>[1, 2, 3, 4, 5].map((int value) {
-                              return new DropdownMenuItem<int>(
-                                value: value,
-                                child: new Text(value.toString()),
-                              );
-                            }).toList(),
-                            onChanged: (val){
-                              setState(() {
-                                dropDownValue = val as int?;
-                              });
-                            },
-                          ),
-                          //password
-                          const SizedBox(height: 15),
-
-
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(builder: (BuildContext context) => HomeViewStudent()),
-                                    (Route<dynamic>route) => false);
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            signup(firstNameControl.text.toString(), lastNameControl.text.toString(),
+                                userNameControl.text.toString(),
+                                emailControl.text.toString(), passwordControl.text.toString());
+
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.purple.shade900,

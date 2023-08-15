@@ -71,6 +71,7 @@ class _HomeViewState extends State<HomeView> {
                     onPressed: () async {
                       var result = await FilePicker.platform.pickFiles(
                         allowMultiple: true,
+
                       );
                       if(result == null) return;
                       var file = result.files.first;

@@ -1,23 +1,22 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/screens/home/student/study.dart';
-import 'package:project1/screens/widget/navigation2.dart';
+import 'package:project1/screens/home/student/self_test.dart';
 
 import '../../widget/centered_view/new.dart';
-import '../../widget/navigation_bar.dart';
+import '../../widget/navigation2.dart';
 import 'Summary.dart';
 
-class SelfTest extends StatefulWidget {
-  const SelfTest({Key? key}) : super(key: key);
+class StudyScreen extends StatefulWidget {
+  const StudyScreen({Key? key}) : super(key: key);
 
   @override
-  State<SelfTest> createState() => _SelfTestState();
+  State<StudyScreen> createState() => _StudyScreenState();
 }
 
-class _SelfTestState extends State<SelfTest> {
+class _StudyScreenState extends State<StudyScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+   return Scaffold(
       backgroundColor: Colors.white,
       drawer: Navigation2(),
       appBar: AppBar(
@@ -73,13 +72,15 @@ class _SelfTestState extends State<SelfTest> {
 
                             ElevatedButton(
                               onPressed: (){
-
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(builder: (BuildContext context) => SelfTest()),
+                                        (Route<dynamic>route) => false);
                               },
 
                               style: ElevatedButton.styleFrom(
                                 textStyle: TextStyle(fontSize: 20),
 
-                                primary: Colors.black87,
+                                primary: Colors.purple.shade900,
                                 fixedSize: const Size(300, 55),
                                 shadowColor: Colors.transparent,
                               ),
@@ -90,14 +91,12 @@ class _SelfTestState extends State<SelfTest> {
 
                             ElevatedButton(
                               onPressed: (){
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (BuildContext context) => StudyScreen()),
-                                        (Route<dynamic>route) => false);
+
                               },
 
                               style: ElevatedButton.styleFrom(
                                 textStyle: TextStyle(fontSize: 20),
-                                primary: Colors.purple.shade900,
+                                primary: Colors.black87,
                                 fixedSize: const Size(300, 55),
                                 shadowColor: Colors.transparent,
                               ),
@@ -113,7 +112,7 @@ class _SelfTestState extends State<SelfTest> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Upload your file to test yourself",
+                            Text("Upload your file for study and testing ",
                               style: TextStyle(
                                   fontSize: 23,
                                   color: Colors.black,
