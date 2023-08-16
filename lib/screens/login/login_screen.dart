@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            content: const Text('your username or password is incorrect',style: TextStyle(fontWeight: FontWeight.bold)),
+            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            content: const Text('your username or password is empty',style: TextStyle(fontWeight: FontWeight.bold),),
+            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'Cancel'),

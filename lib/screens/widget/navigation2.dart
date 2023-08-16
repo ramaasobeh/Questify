@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'dart:convert' as convert;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/details/editPassword.dart';
+import 'package:project1/details/edit_username.dart';
 import 'package:project1/screens/home/home_view_profesor.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,6 +83,20 @@ class _Navigation2State extends State<Navigation2> {
             title: Text("Edit Information"),
             onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (BuildContext context) => EditStudent()),
+                    (Route<dynamic>route) => false),
+          ),
+          ListTile(
+            leading: Icon(Icons.password),
+            title: Text("Edit Password"),
+            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => editPassword()),
+                    (Route<dynamic>route) => false),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Edit username"),
+            onTap: ()=>Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => Editusername()),
                     (Route<dynamic>route) => false),
           ),
           ListTile(

@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constans.dart';
 import '../../details/editInformationPro.dart';
+import '../../details/editPassword.dart';
+import '../../details/edit_username.dart';
 import '../login/login_screen.dart';
 import 'package:http/http.dart' as http;
 class Navigation extends StatefulWidget {
@@ -74,6 +76,20 @@ class _NavigationState extends State<Navigation> {
             title: Text("Edit Information"),
             onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (BuildContext context) => EditInformation()),
+                    (Route<dynamic>route) => false),
+          ),
+          ListTile(
+            leading: Icon(Icons.password),
+            title: Text("Edit Password"),
+            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => editPassword()),
+                    (Route<dynamic>route) => false),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text("Edit username"),
+            onTap: ()=>Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => Editusername()),
                     (Route<dynamic>route) => false),
           ),
 
