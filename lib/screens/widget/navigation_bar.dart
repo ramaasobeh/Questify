@@ -20,6 +20,14 @@ class Navigation extends StatefulWidget {
 }
 
 class _NavigationState extends State<Navigation> {
+  Future<void> logOut() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("Authorization");
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+            (Route<dynamic>route) => false);
+
+  }
 
 
   @override
@@ -96,9 +104,7 @@ class _NavigationState extends State<Navigation> {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text("Log Out"),
-            onTap: ()=> Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
-                    (Route<dynamic>route) => false),
+            onTap: ()=> logOut()
           )
 
         ],

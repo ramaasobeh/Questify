@@ -1,6 +1,11 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/screens/widget/centered_view/new.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../constans.dart';
 import '../../widget/navigation_bar.dart';
 import '../selected_questions/select_questions.dart';
 import 'autamitic.dart';
@@ -13,6 +18,7 @@ class Bank extends StatefulWidget {
 }
 
 class _BankState extends State<Bank> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
