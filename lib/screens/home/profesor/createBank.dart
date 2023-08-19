@@ -110,7 +110,7 @@ class _createBankState extends State<createBank> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Upload new file",
+                            Text("Upload new file (word document)",
                               style: TextStyle(
                                   fontSize: 15,
                                   color: Colors.black
@@ -126,7 +126,7 @@ class _createBankState extends State<createBank> {
                                 fixedSize: const Size(300, 55),
                                 shadowColor: Colors.transparent,
                               ),
-                              child:  const Text("Upload new file (word document)"),
+                              child:  const Text("Upload new file"),
 
                             ),
                             SizedBox(height: 20,),

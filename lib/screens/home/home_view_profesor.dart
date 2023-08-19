@@ -39,23 +39,17 @@ class _HomeViewState extends State<HomeView> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var action = prefs.getString("Authorization");
       print(action);
-      print("11");
-
       FilePickerResult? result = await FilePicker.platform.pickFiles();
-
       if (result != null) {
         Uint8List? uploadFile = result.files.single.bytes;
         String filename = result.files.single.name;
         print(filename);
-        print("22");
         var request = http.MultipartRequest(
           'POST',
           Uri.parse('http://'+Host+'/generator/file_upload/'),
         );
-        print("333");
 
         request.headers["Authorization"] = "JWT $action";
-        print("444");
 
         request.files.add(http.MultipartFile(
           'file',
@@ -63,26 +57,71 @@ class _HomeViewState extends State<HomeView> {
           uploadFile.length,
           filename: filename,
         ));
-        print("555");
 
         var response = await http.Response.fromStream(await request.send());
-        print("66");
         print(response.statusCode);
-        print(response.body);
-
 
         if (response.statusCode == 200) {
-
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => createBank()),
-                (Route<dynamic> route) => false,
+          var data = jsonDecode(response.body);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (BuildContext context) => createBank()),
+    (Route<dynamic> route) => false,),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
           );
-          print('File uploaded successfully');
-        } else {
-          print('Error uploading file. Status code: ${response.statusCode}');
+          print(response.body);
+
         }
-      } else {
-        // User canceled the picker
+        if(response.statusCode==401){
+          var data = jsonDecode(response.body);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+        if(response.statusCode==500){
+          var data = jsonDecode(response.body);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
       }
     } catch (e) {
       print('Error: $e');

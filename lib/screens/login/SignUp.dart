@@ -72,6 +72,7 @@ class _SignUpState extends State<SignUp> {
 
 
         }else{
+
           setState(() {
             _isLoading = false;
 
@@ -80,26 +81,27 @@ class _SignUpState extends State<SignUp> {
         }
 
       }
-       if(response.statusCode==400){
-         var data = jsonDecode(response.body);
-         showDialog<String>(
-           context: context,
-           builder: (BuildContext context) => AlertDialog(
-
-             content: const Text('One of your information is empty',style: TextStyle(fontWeight: FontWeight.bold) ),
-             actions: <Widget>[
-               TextButton(
-                 onPressed: () => Navigator.pop(context, 'Cancel'),
-                 child: const Text('Cancel'),
-               ),
-               TextButton(
-                 onPressed: () => Navigator.pop(context, 'OK'),
-                 child: const Text('OK'),
-               ),
-             ],
-           ),
-         );
-       }
+      else {
+        var data = jsonDecode(response.body);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                content: Text(data.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
+      }
 
     }catch(e){
       print(e.toString());

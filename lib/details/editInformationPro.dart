@@ -92,6 +92,27 @@ var token;
           ),
         );
       }
+      else {
+        var data = jsonDecode(response.body);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                content: Text(data.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
+      }
     }catch(e){
       print(e.toString());
 
@@ -112,6 +133,27 @@ var token;
       if(response.statusCode == 200){
 
         print("update done 2");
+      }
+      else {
+        var data = jsonDecode(response.body);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                content: Text(data.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
       }
 
 

@@ -65,43 +65,25 @@ class _EditStudentState extends State<EditStudent> {
         print("update done");
 
         }
-
-      if(response.statusCode==401){
+      else {
         var data = jsonDecode(response.body);
         showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
+          builder: (BuildContext context) =>
+              AlertDialog(
+                content: Text(data.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-      if(response.statusCode==400){
-        var data = jsonDecode(response.body);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
         );
       }
     }catch(e){
@@ -125,7 +107,28 @@ class _EditStudentState extends State<EditStudent> {
       if(response.statusCode == 200){
 
         print("update done 2");
+      }else {
+        var data = jsonDecode(response.body);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) =>
+              AlertDialog(
+                content: Text(data.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
       }
+
 
 
     }catch(e){
