@@ -15,7 +15,7 @@ class DetailsView extends StatelessWidget {
           ),
         ),
         child: Card(
-        color: Colors.white10,
+        color: Colors.black26,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Column(
 
@@ -23,10 +23,11 @@ class DetailsView extends StatelessWidget {
     mainAxisAlignment: MainAxisAlignment.end,
     children: <Widget>[
 
-    Text('ABOUT',style: TextStyle(color:Colors.white ,fontWeight: FontWeight.w900,height: 0.9,fontSize: 60),),
+    Text('Questify',style: TextStyle(color:Colors.white ,fontWeight: FontWeight.bold,height: 0.9,fontSize: 60),),
     SizedBox(height: 30,
     ),
-    Text("detalis my name is rama ",style: TextStyle(color:Colors.white ,fontWeight: FontWeight.w900,fontSize: 21,height: 1.7),)
+    Text("تقدّم المنصّة ميزة الدراسة التفاعلية والتقييم الذاتي للطلّاب، وميزة تحضير بنك أسئلة مع اختبار بشكل تلقائي للمعلّمين. ",
+      style: TextStyle(color:Colors.white  ,fontWeight: FontWeight.bold,fontSize: 30,height: 1.7),)
     ],
     ),));
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:project1/constans.dart';
 import 'package:project1/screens/home/home_view_profesor.dart';
 import 'package:http/http.dart';
 import 'package:project1/screens/home/home_view_student.dart';
@@ -40,7 +41,7 @@ class _SignUpState extends State<SignUp> {
   void signup(String firstName, lastName, userName,email,password) async{
     SharedPreferences pre = await SharedPreferences.getInstance();
     try{
-       Response response = await post(Uri.parse("http://192.168.92.183:8000/auth/users/"),
+       Response response = await post(Uri.parse("http://"+Host+"/auth/users/"),
 
       body:{
         'first_name' : firstName,
@@ -56,19 +57,11 @@ class _SignUpState extends State<SignUp> {
             _isLoading = false;
           });
           Text(response.body);
-          pre.setString("role", data["role"]);
-          String? stringValue = pre.getString('role');
 
-          if(stringValue == 'professor'){
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => HomeView()),
+                MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
                     (Route<dynamic>route) => false);
-          }
-          if(stringValue == 'student'){
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => HomeViewStudent()),
-                    (Route<dynamic>route) => false);
-          }
+
 
 
         }else{
@@ -283,26 +276,25 @@ class _SignUpState extends State<SignUp> {
                               maxWidth: 400,
                             ),
                             child: TextFormField(
-                              controller: passwordControl,
                               obscureText: hidePassword,
+                              controller:passwordControl ,
                               decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.key),
                                 contentPadding: const EdgeInsets.all(27),
-                                suffix: InkWell(
-                                  onTap: _togglePasswordView,
-                                  child: Icon(Icons.visibility)
-                                ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: OutlineInputBorder (
                                   borderSide:  const BorderSide(color: Pallete.borderColor, width: 3,),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                                  borderRadius: BorderRadius.circular(10),),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                     color: Pallete.gradient2,
                                     width: 3,
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                hintText: 'Password',
+                                  borderRadius: BorderRadius.circular(10),),
+                                hintText: 'password',
+                                suffixIcon: InkWell(
+                                    onTap: _togglePasswordView,
+                                    child: Icon(Icons.visibility)),
+
                               ),
                             ),
                           ),

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:project1/screens/home/profesor/bank.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,28 +21,27 @@ class createBank extends StatefulWidget {
 }
 
 class _createBankState extends State<createBank> {
+  bool _isLoading = false;
+  Stream<List<int>> convertUint8ListToStream(Uint8List uint8List) {
+    return Stream.fromIterable([uint8List.toList()]);
+  }
   Future<void> pickAndUploadFile(BuildContext context) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var action = prefs.getString("Authorization");
       print(action);
-      print("11");
-
       FilePickerResult? result = await FilePicker.platform.pickFiles();
-
       if (result != null) {
         Uint8List? uploadFile = result.files.single.bytes;
         String filename = result.files.single.name;
+
         print(filename);
-        print("22");
         var request = http.MultipartRequest(
           'POST',
           Uri.parse('http://'+Host+'/generator/file_upload/'),
         );
-        print("333");
 
         request.headers["Authorization"] = "JWT $action";
-        print("444");
 
         request.files.add(http.MultipartFile(
           'file',
@@ -48,32 +49,94 @@ class _createBankState extends State<createBank> {
           uploadFile.length,
           filename: filename,
         ));
-        print("555");
 
         var response = await http.Response.fromStream(await request.send());
-        print("66");
         print(response.statusCode);
-        print(response.body);
-
 
         if (response.statusCode == 200) {
+          var data = jsonDecode(response.body.toString());
 
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => createBank()),
-                (Route<dynamic> route) => false,
-          );
-          print('File uploaded successfully');
-        } else {
-          print('Error uploading file. Status code: ${response.statusCode}');
+          print(data);
+          var id = data["id"];
+
+          prefs.setInt("id", id);
+          setState(() {
+            _isLoading = true;
+          });
+          print(id);
+          try{
+            Response response2 = await post(Uri.parse('http://'+Host+'/generator/lectures/'+id.toString()+'/questions/'),
+
+              headers: {
+                "Authorization": "JWT $action",
+              },
+
+            );
+            print(response2.statusCode);
+            if(response2.statusCode==201){
+              if(response2.body != null){
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+              print("sdsdsd");
+              print(response2.body);
+
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => createBank()),
+                    (Route<dynamic> route) => false,);
+            }
+            else{
+              var data3 = jsonDecode(response2.body);
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  content:  Text(data3.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () =>  Navigator.pop(context, 'ok'),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+
+            }
+
+
+          }catch(e){
+            print(e.toString());
+          }
         }
-      } else {
-        // User canceled the picker
+        if(response.statusCode == 500) {
+          var data2 = jsonDecode(response.body);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content:  Text(data2.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () =>  Navigator.pop(context, 'ok'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+
+        }
       }
     } catch (e) {
       print('Error: $e');
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:project1/screens/home/selected_questions/selected_questions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:project1/screens/home/Provider/favourite_provider.dart';
 import 'package:project1/screens/home/Provider/select_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../constans.dart';
 import '../../widget/centered_view/new.dart';
 import '../../widget/navigation_bar.dart';
 
@@ -17,7 +24,22 @@ class SelectQuestion extends StatefulWidget {
 
 class _SelectQuestionState extends State<SelectQuestion> {
   List<int> select = [];
+  late List<qua> list = [];
+  bool loade = true;
 
+  @override
+  void initState() {
+    super.initState();
+    inFun();
+  }
+
+  void inFun() async {
+    list = await fetchQUA();
+
+    setState(() {
+      loade = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<SelectIem>(context);
@@ -66,7 +88,7 @@ class _SelectQuestionState extends State<SelectQuestion> {
                                         children: [
                                           Expanded(
                                             child: ListView.builder(
-                                              itemCount: 50,
+                                              itemCount: list.length,
                                               itemBuilder : (context, index){
                                                 return Consumer<SelectIem>(builder: (context, value, child){
                                                   return ListTile(
@@ -77,7 +99,7 @@ class _SelectQuestionState extends State<SelectQuestion> {
                                                         value.addItem(index);
                                                       }
                                                     },
-                                                    title: Text('Item'+index.toString()),
+                                                    title: Text(list[index].text+index.toString()),
                                                     trailing: Icon(
                                                         value.select.contains(index)? Icons.add_box :Icons.add_box_outlined),
                                                   );
@@ -135,5 +157,44 @@ class _SelectQuestionState extends State<SelectQuestion> {
           ),
       ),),
     );
+  }
+}
+Future<List<qua>> fetchQUA() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? action = prefs.getString("Authorization");
+  var id1 = prefs.get("id");
+  final response = await http.get(
+      Uri.parse("http://"+Host+"/generator/lectures/"+id1.toString()+"/questions/"),
+      headers: {
+        "Authorization": 'JWT $action',
+      });
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    var data1 = utf8.decode(response.bodyBytes);
+    List<dynamic> body = convert.jsonDecode(data1);
+    List<qua> resV = body.map((dynamic item) => qua.fromJson(item)).toList();
+
+    return resV;
+  } else {
+    throw Exception('Failed to load Question');
+  }
+}
+class qua {
+  final int id;
+  final int lecture_id;
+  final  String text;
+
+  const qua({
+    required this.id,
+    required this.lecture_id,
+    required this.text,
+
+
+  });
+  factory qua.fromJson(Map<String,dynamic> json){
+    return qua(id: json['id']as int,
+        lecture_id: json['lecture_id'] as int,
+        text: json['text'] as String);
+
   }
 }

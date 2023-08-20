@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:project1/screens/home/student/Summary_Screen.dart';
 import 'package:project1/screens/home/student/self_test.dart';
 import 'package:project1/screens/home/student/study.dart';
@@ -8,7 +9,6 @@ import 'dart:math';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -36,28 +36,29 @@ class Summary extends StatefulWidget {
   @override
   State<Summary> createState() => _SummaryState();
 }
+
+class _SummaryState extends State<Summary> {
+  bool _isLoading = false;
+Stream<List<int>> convertUint8ListToStream(Uint8List uint8List) {
+  return Stream.fromIterable([uint8List.toList()]);
+}
 Future<void> pickAndUploadFile(BuildContext context) async {
   try {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var action = prefs.getString("Authorization");
     print(action);
-    print("11");
-
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-
     if (result != null) {
       Uint8List? uploadFile = result.files.single.bytes;
       String filename = result.files.single.name;
+
       print(filename);
-      print("22");
       var request = http.MultipartRequest(
         'POST',
         Uri.parse('http://'+Host+'/generator/file_upload/'),
       );
-      print("333");
 
       request.headers["Authorization"] = "JWT $action";
-      print("444");
 
       request.files.add(http.MultipartFile(
         'file',
@@ -65,67 +66,53 @@ Future<void> pickAndUploadFile(BuildContext context) async {
         uploadFile.length,
         filename: filename,
       ));
-      print("555");
+      setState(() {
+        _isLoading = true;
+      });
 
       var response = await http.Response.fromStream(await request.send());
-      print("66");
       print(response.statusCode);
-      print(response.body);
 
 
       if (response.statusCode == 200) {
+        var data = jsonDecode(response.body.toString());
 
+        print(data);
+        var id = data["id"];
+
+        prefs.setInt("id", id);
+        setState(() {
+          _isLoading = false;
+        });
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => SummaryScreen()),
-              (Route<dynamic> route) => false,
-        );
-        print('File uploaded successfully');
-      } if(response.statusCode==401){
-        var data = jsonDecode(response.body);
+              (Route<dynamic> route) => false,);
+      }
+      else{
+        var data2 = jsonDecode(response.body);
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+            content:  Text(data2.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'Cancel'),
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
+                onPressed: () =>  Navigator.pop(context, 'ok'),
                 child: const Text('OK'),
               ),
             ],
           ),
         );
-      }
-      if(response.statusCode==400){
-        var data = jsonDecode(response.body);
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
 
+      }
     }
   } catch (e) {
     print('Error: $e');
   }
 }
-
-class _SummaryState extends State<Summary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,16 +219,12 @@ class _SummaryState extends State<Summary> {
                                   ),
                                 ),
                                SizedBox(height: 15,),
-                               ElevatedButton(onPressed: () async {
-                                 var result = await FilePicker.platform.pickFiles(
-                                   allowMultiple: true,
-                                 );
-                                 if(result == null) return;
-                                 var file = result.files.first;
-                                 pickAndUploadFile(context);
+                               ElevatedButton(
+                                   onPressed: (_isLoading==true)?null
+                                       :() async {
 
-
-                               },
+                                     pickAndUploadFile(context);
+                                   },
                                    style: ElevatedButton.styleFrom(
                                      textStyle: TextStyle(fontSize: 20),
                                      primary: Colors.purple.shade900,

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:flutter/widgets.dart';
@@ -29,8 +29,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
-  var _path;
+  bool _isLoading = false;
   Stream<List<int>> convertUint8ListToStream(Uint8List uint8List) {
     return Stream.fromIterable([uint8List.toList()]);
   }
@@ -43,6 +42,7 @@ class _HomeViewState extends State<HomeView> {
       if (result != null) {
         Uint8List? uploadFile = result.files.single.bytes;
         String filename = result.files.single.name;
+
         print(filename);
         var request = http.MultipartRequest(
           'POST',
@@ -57,70 +57,90 @@ class _HomeViewState extends State<HomeView> {
           uploadFile.length,
           filename: filename,
         ));
+        setState(() {
+          _isLoading = true;
+        });
 
         var response = await http.Response.fromStream(await request.send());
         print(response.statusCode);
 
-        if (response.statusCode == 200) {
-          var data = jsonDecode(response.body);
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-    MaterialPageRoute(builder: (BuildContext context) => createBank()),
-    (Route<dynamic> route) => false,),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-          print(response.body);
 
+        if (response.statusCode == 200) {
+          var data = jsonDecode(response.body.toString());
+
+          print(data);
+          var id = data["id"];
+
+          prefs.setInt("id", id);
+
+          print(id);
+          try{
+            Response response2 = await post(Uri.parse('http://'+Host+'/generator/lectures/'+id.toString()+'/questions/'),
+
+            headers: {
+              "Authorization": "JWT $action",
+            },
+
+            );
+            print(response2.statusCode);
+            if(response2.statusCode==201){
+              if(response2.body != null){
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+              print("sdsdsd");
+              print(response2.body);
+
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => createBank()),
+                    (Route<dynamic> route) => false,);
+            }
+            else{
+              var data3 = jsonDecode(response2.body);
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  content:  Text(data3.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () =>  Navigator.pop(context, 'ok'),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+
+            }
+
+
+            }catch(e){
+            print(e.toString());
+          }
         }
-        if(response.statusCode==401){
-          var data = jsonDecode(response.body);
+      else{
+          var data2 = jsonDecode(response.body);
           showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
-              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+              content:  Text(data2.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
                   child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
+                  onPressed: () =>  Navigator.pop(context, 'ok'),
                   child: const Text('OK'),
                 ),
               ],
             ),
           );
-        }
-        if(response.statusCode==500){
-          var data = jsonDecode(response.body);
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
+
         }
       }
     } catch (e) {
@@ -170,7 +190,9 @@ class _HomeViewState extends State<HomeView> {
 
                     SizedBox(height: 20,),
                     ElevatedButton(
-                    onPressed: () async {
+                    onPressed: (_isLoading==true)?null
+                      :() async {
+
                       pickAndUploadFile(context);
                     },
                      style: ElevatedButton.styleFrom(

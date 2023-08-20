@@ -78,25 +78,7 @@ class _SelfTestState extends State<SelfTest> {
 
 
         if (response.statusCode == 200) {
-          var data = jsonDecode(response.body);
-
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              content:  Text(data.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-
+          print(response.body);
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => SummaryScreen()),
                 (Route<dynamic> route) => false,

@@ -1,10 +1,11 @@
+import 'dart:convert';
 import 'dart:typed_data';
-
+import 'dart:convert' as convert;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/screens/widget/centered_view/new.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../constans.dart';
 import '../../widget/navigation_bar.dart';
 import '../selected_questions/select_questions.dart';
@@ -18,6 +19,22 @@ class Bank extends StatefulWidget {
 }
 
 class _BankState extends State<Bank> {
+  late List<qua> list;
+  bool loade = true;
+  var text2 ;
+  @override
+  void initState() {
+    super.initState();
+    inFun();
+  }
+
+  void inFun() async {
+    list = await fetchQUA();
+    setState(() {
+      loade = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +69,40 @@ class _BankState extends State<Bank> {
                         width: 600,
                         height: 600,
                         child: SingleChildScrollView(
-                          child: Column(
+                          child: (loade == true)
+                          ?Center(child: CircularProgressIndicator())
+                          :Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                           Text("Questions")
+                            ListView.separated(scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(4),
+                                itemCount: list.length,
+                                itemBuilder: (context,index){
+                              return ListTile(trailing: Text(
+                                list[index].id.toString(),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                                title: Text(
+                                  "",
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                      fontSize: 21
+                                  ),
+                                ),
+                                subtitle:Text(
+                                  list[index].text,
+                                  style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
+                                ),
+                              );
+                                },  separatorBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: 10,
+                                  );
+                                },),
                           ],),
                         ),
                       ),
@@ -117,5 +163,44 @@ class _BankState extends State<Bank> {
         ), //Card
       ),
     );
+  }
+}
+Future<List<qua>> fetchQUA() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? action = prefs.getString("Authorization");
+  var id1 = prefs.get("id");
+  final response = await http.get(
+      Uri.parse("http://"+Host+"/generator/lectures/"+id1.toString()+"/questions/"),
+      headers: {
+        "Authorization": 'JWT $action',
+      });
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    var data1 = utf8.decode(response.bodyBytes);
+    List<dynamic> body = convert.jsonDecode(data1);
+    List<qua> resV = body.map((dynamic item) => qua.fromJson(item)).toList();
+
+    return resV;
+  } else {
+    throw Exception('Failed to load Question');
+  }
+}
+class qua {
+  final int id;
+  final int lecture_id;
+  final  String text;
+
+  const qua({
+    required this.id,
+    required this.lecture_id,
+    required this.text,
+
+
+  });
+  factory qua.fromJson(Map<String,dynamic> json){
+    return qua(id: json['id']as int,
+        lecture_id: json['lecture_id'] as int,
+        text: json['text'] as String);
+
   }
 }

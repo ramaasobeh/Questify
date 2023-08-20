@@ -14,5 +14,8 @@ class  SelectIem with ChangeNotifier{
     _select.remove(value);
     notifyListeners();
   }
+  getItem(){
+    return _select;
+  }
 
 }

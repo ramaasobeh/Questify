@@ -14,5 +14,8 @@ class  FavItem with ChangeNotifier{
     _select.remove(value);
     notifyListeners();
   }
+  getvalue(){
+    return _select;
+  }
 
 }
