@@ -26,7 +26,7 @@ class DetailsView extends StatelessWidget {
     Text('Questify',style: TextStyle(color:Colors.white ,fontWeight: FontWeight.bold,height: 0.9,fontSize: 60),),
     SizedBox(height: 30,
     ),
-    Text("تقدّم المنصّة ميزة الدراسة التفاعلية والتقييم الذاتي للطلّاب، وميزة تحضير بنك أسئلة مع اختبار بشكل تلقائي للمعلّمين. ",
+    Text("تقدّم المنصّة ميزة الدراسة التفاعلية والتقييم الذاتي للطلّاب، وميزة تحضير بنك أسئلة مع اختبار بشكل تلقائي للمعلّمين ",
       style: TextStyle(color:Colors.white  ,fontWeight: FontWeight.bold,fontSize: 30,height: 1.7),)
     ],
     ),));

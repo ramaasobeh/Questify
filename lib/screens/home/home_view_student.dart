@@ -88,22 +88,6 @@ class HomeViewStudent extends StatelessWidget {
                             ),
                             SizedBox(height: 15,),
 
-                            ElevatedButton(
-                              onPressed: (){
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (BuildContext context) => StudyScreen()),
-                                        (Route<dynamic>route) => false);
-                              },
-
-                              style: ElevatedButton.styleFrom(
-                                textStyle: TextStyle(fontSize: 20),
-                                primary: Colors.purple.shade900,
-                                fixedSize: const Size(300, 55),
-                                shadowColor: Colors.transparent,
-                              ),
-                              child: const Text("Study with test"),
-
-                            ),
                           ],
                         ),
                       ),

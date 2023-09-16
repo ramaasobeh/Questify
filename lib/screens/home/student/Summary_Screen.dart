@@ -81,7 +81,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                         itemCount: list.length,
                                         itemBuilder: ( context,  index) {
                                           return Text(list[index].text,style:
-                                          TextStyle(fontWeight: FontWeight.bold,fontSize: 25,),); },
+                                          TextStyle(fontWeight: FontWeight.bold,fontSize:20,),); },
                                       ),
                                     )
                                   ],

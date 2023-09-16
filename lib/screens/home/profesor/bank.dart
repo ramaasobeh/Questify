@@ -19,7 +19,7 @@ class Bank extends StatefulWidget {
 }
 
 class _BankState extends State<Bank> {
-  late List<qua> list;
+  late List<qua> list = [];
   bool loade = true;
   var text2 ;
   @override
